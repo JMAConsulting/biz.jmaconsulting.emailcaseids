@@ -88,7 +88,7 @@ function emailcaseids_civicrm_managed(&$entities) {
 }
 
 function emailcaseids_civicrm_alterMailParams(&$params) {
-  if (preg_match('/\[case #([0-9a-h]{7})\]/', $params['subject'], $matches)) {
+  if (!empty($params['subject']) && preg_match('/\[case #([0-9a-h]{7})\]/', $params['subject'], $matches)) {
     $key = CRM_Core_DAO::escapeString(CIVICRM_SITE_KEY);
     $hash = $matches[1];
     $caseID = CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_case WHERE SUBSTR(SHA1(CONCAT('$key', id)), 1, 7) = %1", [1 => [$hash, 'String')]]);
